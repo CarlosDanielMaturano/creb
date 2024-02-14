@@ -18,8 +18,9 @@ fn print_match_content(mut pattern: String, mut content: String, options: ArgsOp
         pattern = pattern.to_lowercase()
     }
     content.lines().enumerate().for_each(|(index, line)| {
-        if !line.contains(&pattern) {
-            return;
+        // only return if the line do not contain the pattern and 'options.invert' is false
+        if line.contains(&pattern) ^ !options.invert {
+            return
         }
         if options.line_numbers {
             print_line_number(index)
@@ -39,19 +40,6 @@ fn print_match_content(mut pattern: String, mut content: String, options: ArgsOp
     });
 }
 
-fn print_invert_content(pattern: String, content: String, options: ArgsOptions) {
-    content.lines().enumerate().for_each(|(index, line)| {
-        if line.contains(&pattern) {
-            return;
-        }
-        if options.line_numbers {
-            print_line_number(index);
-        }
-        println!("{line}");
-    });
-}
-
-
 fn main() {
     let args: Args = Args::parse();
 
@@ -63,9 +51,6 @@ fn main() {
         }
     };
     if let Ok(file_content) = read_file_content(&args.file_path) {
-        if options.invert {
-            return print_invert_content(args.pattern, file_content, options);
-        }
         print_match_content(args.pattern, file_content, options);
     }
 }
