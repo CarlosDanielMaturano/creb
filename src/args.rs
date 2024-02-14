@@ -12,6 +12,7 @@ pub struct ArgsOptions {
     pub invert: bool,
     pub colorize: bool,
     pub line_numbers: bool,
+    pub ignore_case: bool,
 }
 
 fn parse_flags(flags: &Vec<String>) -> Vec<String> {
@@ -22,7 +23,7 @@ fn parse_flags(flags: &Vec<String>) -> Vec<String> {
                 return vec![String::new()];
             }
             if flag.matches("-").count() >= 2 {
-                return vec![flag[2..].to_string()];
+                return vec![flag[2..].to_string()]
             }
             return flag[1..]
                 .chars()
@@ -39,6 +40,7 @@ impl ArgsOptions {
             invert: false,
             colorize: false,
             line_numbers: false,
+            ignore_case: false
         };
 
         for flag in parse_flags(&flags) {
@@ -46,6 +48,7 @@ impl ArgsOptions {
                 "v" | "invert" => options.invert = true,
                 "c" | "color" => options.colorize = true,
                 "n" | "numbers" => options.line_numbers = true,
+                "i" | "ignore-case" => options.ignore_case = true,
                 _ => return Err(Error::new(ErrorKind::Other, format!("Unknow flag: {flag}"))),
             }
         }

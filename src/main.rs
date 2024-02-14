@@ -12,7 +12,11 @@ fn print_line_number(index: usize) {
     print!("{: <8}", format!("{index}."));
 }
 
-fn print_match_content(pattern: String, content: String, options: ArgsOptions) {
+fn print_match_content(mut pattern: String, mut content: String, options: ArgsOptions) {
+    if options.ignore_case {
+        content = content.to_lowercase();
+        pattern = pattern.to_lowercase()
+    }
     content.lines().enumerate().for_each(|(index, line)| {
         if !line.contains(&pattern) {
             return;
@@ -46,6 +50,7 @@ fn print_invert_content(pattern: String, content: String, options: ArgsOptions) 
         println!("{line}");
     });
 }
+
 
 fn main() {
     let args: Args = Args::parse();
