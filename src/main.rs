@@ -3,11 +3,6 @@ pub mod tokens;
 use args::{Args, ArgsOptions};
 use clap::Parser;
 
-fn read_file_content(path: &std::path::PathBuf) -> Result<String, std::io::Error> {
-    let file_content = std::fs::read_to_string(path)?;
-    Ok(file_content)
-}
-
 fn print_line_number(index: usize) {
     print!("{: <8}", format!("{index}."));
 }
@@ -41,8 +36,7 @@ fn print_match_content(mut pattern: String, mut content: String, options: ArgsOp
 }
 
 fn main() {
-    let args: Args = Args::parse();
-
+    let args = Args::parse();
     let options = match ArgsOptions::from_flags(args.flags) {
         Ok(options) => options,
         Err(err) => {
@@ -50,7 +44,7 @@ fn main() {
             std::process::exit(0)
         }
     };
-    if let Ok(file_content) = read_file_content(&args.file_path) {
-        print_match_content(args.pattern, file_content, options);
+    if let Ok(content) = args.file_path.contents() {
+        print_match_content(args.pattern, content, options);
     }
 }

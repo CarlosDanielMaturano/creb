@@ -1,10 +1,11 @@
 use clap::Parser;
 use std::io::{Error, ErrorKind};
+use clap_stdin::FileOrStdin;
 
 #[derive(Parser, Debug)]
 pub struct Args {
     pub pattern: String,
-    pub file_path: std::path::PathBuf,
+    pub file_path: FileOrStdin,
     pub flags: Vec<String>,
 }
 
