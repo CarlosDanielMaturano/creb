@@ -13,7 +13,7 @@ fn print_match_content(mut pattern: String, mut content: String, options: ArgsOp
         pattern = pattern.to_lowercase()
     }
     content.lines().enumerate().for_each(|(index, line)| {
-        // only return if the line do not contain the pattern and 'options.invert' is false
+        // only return if the line do not contain the pattern and 'options.invert' is set to false
         if line.contains(&pattern) ^ !options.invert {
             return
         }
